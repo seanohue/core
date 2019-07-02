@@ -1,10 +1,13 @@
 'use strict';
 
+const EventManager = require('./EventManager');
+
 /**
  * Keeps track of all the individual mobs in the game
  */
 class MobManager {
   constructor() {
+    this.events = new EventManager();
     this.mobs = new Map();
   }
 
@@ -12,7 +15,12 @@ class MobManager {
    * @param {Mob} mob
    */
   addMob(mob) {
+    this.events.attach(mob);
     this.mobs.set(mob.uuid, mob);
+  }
+
+  addListener(eventName, listener) {
+    this.events.add(event, listener);
   }
 
   /**

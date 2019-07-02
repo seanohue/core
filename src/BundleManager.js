@@ -107,6 +107,7 @@ class BundleManager {
       { path: 'input-events/', fn: 'loadInputEvents' },
       { path: 'server-events/', fn: 'loadServerEvents' },
       { path: 'player-events.js', fn: 'loadPlayerEvents' },
+      { path: 'npc-events.js', fn: 'loadNpcEvents' },
       { path: 'skills/', fn: 'loadSkills' },
     ];
 
@@ -222,6 +223,25 @@ class BundleManager {
     for (const [eventName, listener] of Object.entries(playerListeners)) {
       Logger.verbose(`\t\tEvent: ${eventName}`);
       this.state.PlayerManager.addListener(eventName, listener(this.state));
+    }
+
+    Logger.verbose(`\tENDLOAD: Player Events...`);
+  }
+
+    /**
+   * Load/initialize npc events.
+   * @param {string} bundle
+   * @param {string} eventsFile event js file to load
+   */
+  loadPlayerEvents(bundle, eventsFile) {
+    Logger.verbose(`\tLOAD: Player Events...`);
+
+    const loader = require(eventsFile);
+    const playerListeners = this._getLoader(loader, srcPath).listeners;
+
+    for (const [eventName, listener] of Object.entries(playerListeners)) {
+      Logger.verbose(`\t\tEvent: ${eventName}`);
+      this.state.MobManager.addListener(eventName, listener(this.state));
     }
 
     Logger.verbose(`\tENDLOAD: Player Events...`);
