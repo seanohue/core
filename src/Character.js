@@ -5,7 +5,6 @@ const Config = require('./Config');
 const EffectList = require('./EffectList');
 const { EquipSlotTakenError, EquipAlreadyEquippedError } = require('./EquipErrors');
 const EventEmitter = require('events');
-const Heal = require('./Heal');
 const Metadatable = require('./Metadatable');
 const { Inventory, InventoryFullError } = require('./Inventory');
 
