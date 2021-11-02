@@ -7,6 +7,7 @@ import { Constructor, DeepResolveType } from './Util';
  * @return {module:MetadatableFn~Metadatable}
  */
 export type Metadata = Record<string, any>;
+export type MetadataWrapper<M = Metadata> = { metadata: M };
 
 export function Metadatable<TBase extends Constructor>(ParentClass: TBase) {
 	/**
@@ -14,8 +15,13 @@ export function Metadatable<TBase extends Constructor>(ParentClass: TBase) {
 	 * @mixin
 	 * @alias module:MetadatableFn~Metadatable
 	 */
-	return class extends ParentClass {
+	return class MetadatableMixin extends ParentClass {
 		metadata?: Metadata;
+
+		constructor(...args: any[]) {
+			super(...args);
+		}
+
 		/**
 		 * Set a metadata value.
 		 * Warning: Does _not_ autovivify, you will need to create the parent objects if they don't exist
@@ -78,11 +84,12 @@ export function Metadatable<TBase extends Constructor>(ParentClass: TBase) {
 			M extends Metadata = Metadata,
 			P extends string = string
 		>(
+			this: MetadataWrapper<M>,
 			path: P
 		): DeepResolveType<M, P, void>;
 		getMeta<
 			M extends Metadata = Metadata,
-			P extends string = string
+			P extends string = Exclude<keyof M, number | symbol>
 		>(
 			path?: P
 		): M | DeepResolveType<M, P, void> {
