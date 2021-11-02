@@ -7,7 +7,6 @@ import { IItemDef } from './Item';
 import { Logger } from './Logger';
 import { Room } from './Room';
 import { Scriptable } from './Scriptable';
-import { Constructor } from './Util';
 
 const uuid = require('uuid');
 
@@ -25,7 +24,7 @@ export interface INpcDef extends ICharacterConfig {
 	uuid?: string;
 }
 
-export class Npc extends Scriptable<any>(Character) {
+export class Npc extends Scriptable(Character) {
 	area: Area;
 	script?: string;
 	behaviors?: Map<string, any>;
@@ -38,7 +37,7 @@ export class Npc extends Scriptable<any>(Character) {
 	uuid: string;
 	commandQueue: CommandQueue;
 	keywords: string[];
-  sourceRoom: Room | null;
+  	sourceRoom: Room | null;
 	__pruned: boolean = false;
 	
 	static validate: (keyof Npc)[] = ['name', 'id'];
