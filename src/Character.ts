@@ -11,7 +11,6 @@ import { Party } from './Party';
 import { EquipSlotTakenError, EquipAlreadyEquippedError } from './EquipErrors';
 import { EntityReference } from './EntityReference';
 import { Equipment } from './Equipment';
-import { AnyCharacter } from './GameEntity';
 
 export interface ICharacterConfig extends ISerializedEffectableEntity {
 	/** @property {string}     name       Name shown on look/who/login */

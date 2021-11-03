@@ -15,12 +15,8 @@ export function Metadatable<TBase extends Constructor>(ParentClass: TBase) {
 	 * @mixin
 	 * @alias module:MetadatableFn~Metadatable
 	 */
-	return class MetadatableMixin extends ParentClass {
+	return class extends ParentClass {
 		metadata?: Metadata;
-
-		constructor(...args: any[]) {
-			super(...args);
-		}
 
 		/**
 		 * Set a metadata value.
