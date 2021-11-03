@@ -7,7 +7,7 @@ import { Constructor, DeepResolveType } from './Util';
  * @return {module:MetadatableFn~Metadatable}
  */
 export type Metadata = Record<string, any>;
-export type MetadataWrapper<M = Metadata> = { metadata: M };
+export type MetadataWrapper<S, M = Metadata> = S & { metadata: M };
 
 export function Metadatable<TBase extends Constructor>(ParentClass: TBase) {
 	/**
@@ -80,7 +80,7 @@ export function Metadatable<TBase extends Constructor>(ParentClass: TBase) {
 			M extends Metadata = Metadata,
 			P extends string = string
 		>(
-			this: MetadataWrapper<M>,
+			this: MetadataWrapper<this, M>,
 			path: P
 		): DeepResolveType<M, P, void>;
 		getMeta<
