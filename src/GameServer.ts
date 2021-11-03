@@ -1,13 +1,13 @@
 import { EventEmitter } from 'events';
 import { IGameState } from './GameState';
-import { CommanderStatic } from 'commander';
+import { Command } from 'commander';
 
 export class GameServer extends EventEmitter {
 	/**
 	 * @param {commander} commander
 	 * @fires GameServer#startup
 	 */
-	startup(commander: CommanderStatic) {
+	startup(commander: Command) {
 		/**
 		 * @event GameServer#startup
 		 * @param {commander} commander
