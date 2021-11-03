@@ -29,6 +29,6 @@ export class GameServer extends EventEmitter {
 export interface IGameServerEvent {
     listeners: {
         shutdown?: (state: IGameState) => () => void;
-        startup?: (state: IGameState) => (commander: CommanderStatic) => void;
+        startup?: (state: IGameState) => (commander: Command) => void;
     };
 }
