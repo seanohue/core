@@ -48,7 +48,6 @@ type Join<K, P> = K extends string | number
 		: never 
 	: never;
 
-// lol idk
 export type Paths<T, D extends number = 10> = [D] extends [never] 
 	? never 
 	: T extends object 
