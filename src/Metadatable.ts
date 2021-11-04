@@ -1,4 +1,4 @@
-import { Constructor, DeepResolveType, Paths } from './Util';
+import { Constructor, DeepResolveRecord, DeepResolveType, Paths } from './Util';
 
 /**
  * @ignore
@@ -7,7 +7,6 @@ import { Constructor, DeepResolveType, Paths } from './Util';
  * @return {module:MetadatableFn~Metadatable}
  */
 export type Metadata = Record<string, any>;
-export type MetadataWrapper<S, M = Metadata> = S & { metadata?: M };
 
 export function Metadatable<TBase extends Constructor>(ParentClass: TBase) {
 	/**
@@ -77,31 +76,20 @@ export function Metadatable<TBase extends Constructor>(ParentClass: TBase) {
 		 * @return {*}
 		 * @throws Error
 		 */
-		getMeta<M extends Metadata = Metadata>(): M;
-		getMeta<
-			M extends Metadata
-		>(
-			this: MetadataWrapper<this, M>,
-			path: Paths<M, 4>,
-		): DeepResolveType<M, Paths<M, 4>, void>;
 		getMeta<
 			M extends Metadata,
+			P extends Paths<M, 4> = Paths<M, 4>
 		>(
-			this: MetadataWrapper<this, M>,
-			path?: Paths<M, 4>
-		): M | DeepResolveType<M, Paths<M, 4>, void> {
+			path?: P
+		): DeepResolveRecord<M>[P] {
 			if (!this.metadata) {
 				throw new Error('Class does not have metadata property');
-			}
-
-			if (path === undefined) {
-				return this.metadata as M;
 			}
 
 			const base = this.metadata;
 			return (path as string)
 				.split('.')
-				.reduce((obj: any, key: string) => obj && obj[key], base);
+				.reduce((obj: any, key: string) => obj && obj[key], base) as DeepResolveRecord<M>[P];
 		}
 	};
 }

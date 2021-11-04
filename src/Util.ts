@@ -34,6 +34,10 @@ export type DeepResolveType<ObjectType, Path extends string, OrElse> =
 							: OrElse
 						: OrElse;
 
+export type DeepResolveRecord<ObjectType> = {
+	[Property in Paths<ObjectType, 4>]: DeepResolveType<ObjectType, Property, void>;
+}
+
 /**
  * From jzcalz/Michael Ziluck here: 
  * https://stackoverflow.com/questions/58434389/typescript-deep-keyof-of-a-nested-object
@@ -48,6 +52,7 @@ type Join<K, P> = K extends string | number
 		: never 
 	: never;
 
+// lol idk
 export type Paths<T, D extends number = 10> = [D] extends [never] 
 	? never 
 	: T extends object 
