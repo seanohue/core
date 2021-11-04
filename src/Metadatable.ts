@@ -69,6 +69,15 @@ export function Metadatable<TBase extends Constructor>(ParentClass: TBase) {
 			this.emit('metadataUpdated', path, value, oldValue);
 		}
 
+		/** Get whole metadata object */
+		getAllMeta<M extends Metadata>(): M {
+			if (!this.metadata) {
+				throw new Error('Class does not have metadata property');
+			}
+
+			return this.metadata as M;
+		}
+
 		/**
 		 * Get metadata by dot notation
 		 * Warning: This method is _very_ permissive and will not error on a non-existent key. Rather, it will return void.
