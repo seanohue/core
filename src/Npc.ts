@@ -2,9 +2,8 @@ import { Area } from './Area';
 import { Character, ICharacterConfig } from './Character';
 import { CommandQueue } from './CommandQueue';
 import { EntityReference } from './EntityReference';
-import { Equipment } from './Equipment';
 import { IGameState } from './GameState';
-import { IItemDef, Item } from './Item';
+import { IItemDef } from './Item';
 import { Logger } from './Logger';
 import { Room } from './Room';
 import { Scriptable } from './Scriptable';
@@ -25,13 +24,6 @@ export interface INpcDef extends ICharacterConfig {
 	uuid?: string;
 }
 
-/**
- * @property {number} id   Area-relative id (vnum)
- * @property {Area}   area Area npc belongs to (not necessarily the area they're currently in)
- * @property {Map} behaviors
- * @extends Character
- * @mixes Scriptable
- */
 export class Npc extends Scriptable(Character) {
 	area: Area;
 	script?: string;
@@ -48,7 +40,7 @@ export class Npc extends Scriptable(Character) {
   sourceRoom: Room | null;
 	__pruned: boolean = false;
 	
-	static validate: string[] = ['name', 'id'];
+	static validate: (keyof Npc)[] = ['name', 'id'];
 	constructor(area: Area, data: INpcDef) {
 		super(data);
 
