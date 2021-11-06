@@ -34,6 +34,10 @@ export type DeepResolveType<ObjectType, Path extends string, OrElse> =
 							: OrElse
 						: OrElse;
 
+/**
+ * Helper to generate a record type consumable by Meta generics, e.g.:
+ * player.getMeta<DeepResolveRecord<IPlayerMetadata>>('resources.scrap_metal')
+ */
 export type DeepResolveRecord<ObjectType> = {
 	[Property in Paths<ObjectType, 4>]: DeepResolveType<ObjectType, Property, void>;
 }
@@ -44,7 +48,7 @@ export type DeepResolveRecord<ObjectType> = {
  */
 
 // Joins strings/numbers to make dotted paths
-type Join<K, P> = K extends string | number 
+export type Join<K, P> = K extends string | number 
 	? P extends string | number 
 		? `${K}${"" extends P 
 			? "" 
@@ -52,7 +56,7 @@ type Join<K, P> = K extends string | number
 		: never 
 	: never;
 
-// lol idk
+// Gets all possible paths at all levels of nesting
 export type Paths<T, D extends number = 10> = [D] extends [never] 
 	? never 
 	: T extends object 
@@ -61,6 +65,7 @@ export type Paths<T, D extends number = 10> = [D] extends [never]
 			: never
 		}[keyof T] : "";
 
+// Get only paths that end in a non-object/array-like
 export type Leaves<T, D extends number = 10> = [D] extends [never] 
 	? never 
 	: T extends object 
