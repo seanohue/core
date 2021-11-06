@@ -1,4 +1,4 @@
-import { Constructor } from './Util';
+import { Constructor, DeepResolveRecord, DeepResolveType, Paths } from './Util';
 
 /**
  * @ignore
@@ -16,6 +16,7 @@ export function Metadatable<TBase extends Constructor>(ParentClass: TBase) {
 	 */
 	return class extends ParentClass {
 		metadata?: Metadata;
+
 		/**
 		 * Set a metadata value.
 		 * Warning: Does _not_ autovivify, you will need to create the parent objects if they don't exist
@@ -25,12 +26,17 @@ export function Metadatable<TBase extends Constructor>(ParentClass: TBase) {
 		 * @throws RangeError
 		 * @fires Metadatable#metadataUpdate
 		 */
-		setMeta(key: string, value: any) {
+		setMeta<
+			M extends Metadata,
+		>(
+			path: Paths<M, 4>, 
+			value: DeepResolveType<M, Paths<M, 4>, unknown>
+		): void {
 			if (!this.metadata) {
 				throw new Error('Class does not have metadata property');
 			}
 
-			let parts = key.split('.');
+			let parts = (path as string).split('.');
 			const property = parts.pop();
 			let base = this.metadata;
 
@@ -41,7 +47,7 @@ export function Metadatable<TBase extends Constructor>(ParentClass: TBase) {
 			while (parts.length) {
 				let part = parts.shift();
 				if (!part || !(part in base)) {
-					throw new RangeError(`Metadata path invalid: ${key}`);
+					throw new RangeError(`Metadata path invalid: ${path}`);
 				}
 				base = base[part];
 			}
@@ -60,23 +66,39 @@ export function Metadatable<TBase extends Constructor>(ParentClass: TBase) {
 			 * @param {*} newValue
 			 * @param {*} oldValue
 			 */
-			this.emit('metadataUpdated', key, value, oldValue);
+			this.emit('metadataUpdated', path, value, oldValue);
+		}
+
+		/** Get whole metadata object */
+		getAllMeta<M extends Metadata>(): M {
+			if (!this.metadata) {
+				throw new Error('Class does not have metadata property');
+			}
+
+			return this.metadata as M;
 		}
 
 		/**
 		 * Get metadata by dot notation
-		 * Warning: This method is _very_ permissive and will not error on a non-existent key. Rather, it will return false.
+		 * Warning: This method is _very_ permissive and will not error on a non-existent key. Rather, it will return void.
 		 * @param {string} key Key to fetch. Supports dot notation e.g., `"foo.bar"`
 		 * @return {*}
 		 * @throws Error
 		 */
-		getMeta(key: string) {
+		getMeta<
+			M extends Metadata,
+			P extends Paths<M, 4> = Paths<M, 4>
+		>(
+			path?: P
+		): DeepResolveRecord<M>[P] {
 			if (!this.metadata) {
 				throw new Error('Class does not have metadata property');
 			}
 
 			const base = this.metadata;
-			return key.split('.').reduce((obj, index) => obj && obj[index], base);
+			return (path as string)
+				.split('.')
+				.reduce((obj: any, key: string) => obj && obj[key], base) as DeepResolveRecord<M>[P];
 		}
 	};
 }

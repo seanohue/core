@@ -6,7 +6,7 @@ import { Effect, ISerializedEffect } from './Effect';
 import { EffectList } from './EffectList';
 import { IGameState } from './GameState';
 import { Logger } from './Logger';
-import { AnyCharacter } from './GameEntity';
+import { Character } from './Character';
 
 export interface ISerializedEffectableEntity {
 	attributes: SerializedAttributes;
@@ -258,13 +258,13 @@ export class EffectableEntity extends EventEmitter {
 	 * @see EffectList.evaluateIncomingDamage
 	 * @param {Damage} damage
 	 * @param {number} currentAmount
-	 * @param {?AnyCharacter} attacker
+	 * @param {?Character} attacker
 	 * @return {number}
 	 */
 	evaluateIncomingDamage(
 		damage: Damage,
 		currentAmount: number,
-		attacker?: AnyCharacter
+		attacker?: Character
 	) {
 		const amount = this.effects.evaluateIncomingDamage(
 			damage,
@@ -278,13 +278,13 @@ export class EffectableEntity extends EventEmitter {
 	 * @see EffectList.evaluateOutgoingDamage
 	 * @param {Damage} damage
 	 * @param {number} currentAmount
-	 * @param {AnyCharacter} target
+	 * @param {Character} target
 	 * @return {number}
 	 */
 	evaluateOutgoingDamage(
 		damage: Damage,
 		currentAmount: number,
-		target: AnyCharacter
+		target: Character
 	) {
 		return this.effects.evaluateOutgoingDamage(damage, currentAmount, target);
 	}
