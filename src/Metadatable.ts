@@ -1,4 +1,4 @@
-import { Constructor, DeepResolveRecord, DeepResolveType, Paths } from './Util';
+import { Constructor } from './Util';
 
 /**
  * @ignore
@@ -26,11 +26,9 @@ export function Metadatable<TBase extends Constructor>(ParentClass: TBase) {
 		 * @throws RangeError
 		 * @fires Metadatable#metadataUpdate
 		 */
-		setMeta<
-			M extends Metadata,
-		>(
-			path: Paths<M, 4>, 
-			value: DeepResolveType<M, Paths<M, 4>, unknown>
+		setMeta(
+			path: string,
+			value: any,
 		): void {
 			if (!this.metadata) {
 				throw new Error('Class does not have metadata property');
@@ -85,12 +83,9 @@ export function Metadatable<TBase extends Constructor>(ParentClass: TBase) {
 		 * @return {*}
 		 * @throws Error
 		 */
-		getMeta<
-			M extends Metadata,
-			P extends Paths<M, 4> = Paths<M, 4>
-		>(
-			path?: P
-		): DeepResolveRecord<M>[P] {
+		getMeta(
+			path?: string
+		): unknown {
 			if (!this.metadata) {
 				throw new Error('Class does not have metadata property');
 			}
@@ -98,7 +93,7 @@ export function Metadatable<TBase extends Constructor>(ParentClass: TBase) {
 			const base = this.metadata;
 			return (path as string)
 				.split('.')
-				.reduce((obj: any, key: string) => obj && obj[key], base) as DeepResolveRecord<M>[P];
+				.reduce((obj: any, key: string) => obj && obj[key], base);
 		}
 	};
 }
