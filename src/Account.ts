@@ -9,7 +9,7 @@ export interface IAccountConfig {
 	/** @property {string} username */
 	username: string;
 	/** @property {Array<string>} characters List of character names in this account */
-	characters?: string[];
+	characters?: IAccountCharacter[];
 	/** @property {string} password Hashed password */
 	password: string;
 	/** @property {boolean} banned Whether this account is banned or not */
@@ -61,7 +61,7 @@ export class Account extends Metadatable(EventEmitter) {
 	/**
 	 * @param {Object} data Account save data
 	 */
-	constructor(data: ISerializedAccount) {
+	constructor(data: IAccountConfig) {
 		super();
 		this.username = data.username;
 		this.characters = data.characters || [];
