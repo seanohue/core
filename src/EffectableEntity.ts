@@ -13,7 +13,7 @@ export interface ISerializedEffectableEntity {
 	effects: ISerializedEffect[];
 }
 
-export type SerializedAttributes = Record<string, ISerializedAttribute>;
+export type SerializedAttributes = Record<string, ISerializedAttribute | number>;
 
 /**
  * @ignore
