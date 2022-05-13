@@ -252,7 +252,7 @@ export class Skill {
 		const effect = this.state.EffectFactory.create(
 			'cooldown',
 			{
-				name: 'Cooldown: ' + this.name,
+				name: `Cooldown (${this.name})`,
 				duration: duration * 1000,
 			},
 			{ cooldownId: this.getCooldownId() }
