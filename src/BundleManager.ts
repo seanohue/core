@@ -274,6 +274,7 @@ export class BundleManager {
 		let areas: IAreaManifest[] = [];
 
 		if (!(await areaLoader.hasData())) {
+			console.log('nothing from area loader, returning', areas);
 			return areas;
 		}
 
@@ -387,6 +388,7 @@ export class BundleManager {
 		loader.setArea(areaName);
 
 		if (!(await loader.hasData())) {
+			console.log('no data for loader ', type, areaName);
 			return [];
 		}
 
@@ -551,9 +553,10 @@ export class BundleManager {
 		}
 
 		const records = await loader.fetchAll();
+		console.log('Got help records', records);
 		for (const helpName in records) {
 			try {
-				const hfile = new Helpfile(bundle, helpName, records[helpName]); // TODO: Remove this .doc stuff
+				const hfile = new Helpfile(bundle, helpName, records[helpName]);
 
 				const command =
 					hfile.command && this.state.CommandManager.get(hfile.command);
