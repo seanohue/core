@@ -42,7 +42,7 @@ export class Helpfile {
 		this.name = name;
 
 		if (!options || !options.body) {
-			console.dir(options);
+			console.log(options);
 			throw new Error(`Help file [${name}] has no content.`);
 		}
 
