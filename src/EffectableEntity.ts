@@ -339,7 +339,6 @@ export class EffectableEntity extends EventEmitter {
 
 	/**
 	 * Gather data to be persisted
-	 * @return {Object}
 	 */
 	serialize() {
 		return {

@@ -37,7 +37,7 @@ export class Attributes extends Map<AttributeName, Attribute> {
 	 * Gather data that will be persisted
 	 * @return {Object}
 	 */
-	serialize() {
+	serialize(): Record<AttributeName, ISerializedAttribute | number> {
 		const data: Record<AttributeName, ISerializedAttribute> = {};
 		[...this].forEach((attributeObj: [AttributeName, Attribute]) => {
 			const [name, attribute] = attributeObj;
