@@ -12,7 +12,7 @@ import { EntityFactoryType } from './EntityFactory';
 import { EntityLoaderKeys, EntityLoaderRegistry } from './EntityLoaderRegistry';
 import { EntityReference } from './EntityReference';
 import { EventListeners } from './EventManager';
-import { GameEntities, GameEntityDefinition } from './GameEntity';
+import { GameEntityDefinition } from './GameEntity';
 import { IGameState } from './GameState';
 import { Helpfile } from './Helpfile';
 import { Logger } from './Logger';
@@ -553,7 +553,7 @@ export class BundleManager {
 		const records = await loader.fetchAll();
 		for (const helpName in records) {
 			try {
-				console.log('Creating help ', records[helpName]);
+				Logger.warn('Creating help ', records[helpName]);
 				const hfile = new Helpfile(bundle, helpName, records[helpName]);
 
 				const command =
