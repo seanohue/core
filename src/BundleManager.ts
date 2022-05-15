@@ -553,6 +553,7 @@ export class BundleManager {
 		const records = await loader.fetchAll();
 		for (const helpName in records) {
 			try {
+				console.log('Creating help ', records[helpName]);
 				const hfile = new Helpfile(bundle, helpName, records[helpName]);
 
 				const command =
