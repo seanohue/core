@@ -42,8 +42,7 @@ export class Helpfile {
 		this.name = name;
 
 		if (!options || !options.body) {
-			console.log(options);
-			throw new Error(`Help file [${name}] has no content.`);
+			throw new Error(`Help file [${name}] has no content, got ${JSON.stringify(options)}.`);
 		}
 
 		this.keywords = options.keywords || [name];
