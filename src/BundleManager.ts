@@ -387,6 +387,7 @@ export class BundleManager {
 		loader.setArea(areaName);
 
 		if (!(await loader.hasData())) {
+			Logger.warn(`Loader for type ${type} has no data.`);
 			return [];
 		}
 
@@ -553,7 +554,6 @@ export class BundleManager {
 		const records = await loader.fetchAll();
 		for (const helpName in records) {
 			try {
-				Logger.warn('Creating help ', records[helpName]);
 				const hfile = new Helpfile(bundle, helpName, records[helpName]);
 
 				const command =
