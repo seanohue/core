@@ -1,3 +1,4 @@
+import { Logger } from './Logger';
 import { EntityReference } from './EntityReference';
 import { Room } from './Room';
 
@@ -17,6 +18,7 @@ export class RoomManager {
 	getRoom(entityRef: EntityReference) {
 		const room = this.rooms.get(entityRef);
 		if (!room) {
+			Logger.warn(this.rooms);
 			throw new Error(`RoomManager can't find the Room [${entityRef}]`);
 		}
 		return room;
