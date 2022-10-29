@@ -1,3 +1,4 @@
+import { Logger } from './Logger';
 import { AreaFloor } from './AreaFloor';
 import { ISerializedEffect } from './Effect';
 import { SerializedAttributes } from './EffectableEntity';
@@ -240,6 +241,7 @@ export class Area extends GameEntity {
 		this.setupBehaviors(state.AreaBehaviorManager);
 		const rooms = state.AreaFactory.getDefinition(this.name)?.rooms || [];
 		for (const roomRef of rooms) {
+			Logger.warn(`[Area][hydrate] Adding ${roomRef}`);
 			const room = state.RoomFactory.create(this, roomRef);
 			this.addRoom(room);
 			state.RoomManager.addRoom(room);
