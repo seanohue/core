@@ -90,6 +90,7 @@ export class BundleManager {
 
 		// Distribution is done after all areas are loaded in case items use areas from each other
 		for (const areaRef of this.areas) {
+			Logger.warn(`[BundleManager] Creating and hydrating ${areaRef}`);
 			const area = this.state.AreaFactory.create(areaRef);
 			try {
 				area.hydrate(this.state);
