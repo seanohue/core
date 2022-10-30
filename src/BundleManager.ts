@@ -386,7 +386,7 @@ export class BundleManager {
 		const loader = this.loaderRegistry.get(type);
 		loader.setBundle(bundle);
 		loader.setArea(areaName);
-
+		Logger.warn(`[BundleManager][loadEntities][${type}] Set bundle="${bundle}" and area="${areaName}"`);
 		if (!(await loader.hasData())) {
 			Logger.warn(`Loader for type ${type} has no data.`);
 			return [];
