@@ -1,6 +1,5 @@
 import { EffectableEntity } from './EffectableEntity';
 import { Metadata } from './Metadatable';
-import { Player } from './Player';
 
 export type AttributeName = string;
 
@@ -51,8 +50,8 @@ export class Attribute {
 		name: AttributeName,
 		base: number,
 		delta: number,
-		formula: AttributeFormula | null,
-		metadata: Metadata
+		formula?: AttributeFormula | null,
+		metadata?: Metadata
 	) {
 		if (isNaN(base)) {
 			throw new TypeError(`Base attribute must be a number, got ${base}.`);
@@ -70,7 +69,7 @@ export class Attribute {
 		this.base = base;
 		this.delta = delta;
 		this.formula = formula;
-		this.metadata = metadata;
+		this.metadata = metadata || {};
 	}
 
 	/**
