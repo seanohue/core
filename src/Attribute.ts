@@ -49,7 +49,7 @@ export class Attribute {
 	constructor(
 		name: AttributeName,
 		base: number,
-		delta: number,
+		delta: number = 0,
 		formula?: AttributeFormula | null,
 		metadata?: Metadata
 	) {
