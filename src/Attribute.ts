@@ -68,7 +68,7 @@ export class Attribute {
 		this.name = name;
 		this.base = base;
 		this.delta = delta;
-		this.formula = formula;
+		this.formula = formula || null;
 		this.metadata = metadata || {};
 	}
 
