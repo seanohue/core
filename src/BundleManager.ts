@@ -469,7 +469,9 @@ export class BundleManager {
 		let quests = [];
 		try {
 			quests = await loader.fetchAll();
-		} catch (err) {}
+		} catch (err) {
+			Logger.error(`Error loading quests for area ${areaName} bundle ${bundle}: `, err);
+		}
 
 		return quests.map((quest: IQuestDef) => {
 			Logger.verbose(`\t\t\tLoading Quest [${areaName}:${quest.id}]`);
