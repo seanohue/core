@@ -125,7 +125,7 @@ export class Room extends GameEntity {
 						y: def.coordinates[1],
 						z: def.coordinates[2],
 				  }
-				: def.coordinates.x && def.coordinates.y && def.coordinates.z ? def.coordinates : null;
+				: !Array.isArray(def.coordinates) && def.coordinates?.x && def.coordinates?.y && def.coordinates?.z ? def.coordinates : null;
 		this.description = def.description;
 		this.entityReference = this.area.name + ':' + def.id;
 		this.exits = def.exits || [];
