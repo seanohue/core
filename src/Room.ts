@@ -35,7 +35,7 @@ export interface IRoomDef {
 	behaviors?: Record<string, any>;
 	attributes?: SerializedAttributes;
 	effects?: ISerializedEffect[];
-	coordinates?: [number, number, number];
+	coordinates?: [number, number, number] | { x: number; y: number; z: number } | null;
 	doors?: Record<string, IDoor>;
 	exits?: IExit[];
 	metadata?: Record<string, any>;
@@ -116,6 +116,8 @@ export class Room extends GameEntity {
 		this.metadata = def.metadata || {};
 		this.script = def.script || null;
 		this.behaviors = new Map(Object.entries(def.behaviors || {}));
+
+		//TODO: allow coordinates to be defined as an array [x, y, z] or an object {x, y, z}
 		this.coordinates =
 			Array.isArray(def.coordinates) && def.coordinates.length === 3
 				? {
@@ -123,7 +125,7 @@ export class Room extends GameEntity {
 						y: def.coordinates[1],
 						z: def.coordinates[2],
 				  }
-				: null;
+				: def.coordinates.x && def.coordinates.y && def.coordinates.z ? def.coordinates : null;
 		this.description = def.description;
 		this.entityReference = this.area.name + ':' + def.id;
 		this.exits = def.exits || [];
