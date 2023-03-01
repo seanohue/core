@@ -117,15 +117,18 @@ export class Room extends GameEntity {
 		this.script = def.script || null;
 		this.behaviors = new Map(Object.entries(def.behaviors || {}));
 
-		//TODO: allow coordinates to be defined as an array [x, y, z] or an object {x, y, z}
-		this.coordinates =
-			Array.isArray(def.coordinates) && def.coordinates.length === 3
-				? {
-						x: def.coordinates[0],
-						y: def.coordinates[1],
-						z: def.coordinates[2],
-				  }
-				: !Array.isArray(def.coordinates) && def.coordinates?.x && def.coordinates?.y && def.coordinates?.z ? def.coordinates : null;
+		const isArrayCoords = (coords: typeof def.coordinates): coords is [number, number, number] => Array.isArray(coords) && coords.length === 3;
+		const isObjectCoords = (coords: typeof def.coordinates): coords is { x: number, y: number, z: number } => Boolean(
+			!Array.isArray(def.coordinates) && def.coordinates?.x && def.coordinates?.y && def.coordinates?.z
+		);
+		console.log({ coords: def.coordinates, isArrayCoords: isArrayCoords(def.coordinates), isObjectCoords: isObjectCoords(def.coordinates) });
+		this.coordinates = isArrayCoords(def.coordinates) 
+			? {
+					x: def.coordinates[0],
+					y: def.coordinates[1],
+					z: def.coordinates[2],
+				}
+			: isObjectCoords(def.coordinates) ? def.coordinates : null;
 		this.description = def.description;
 		this.entityReference = this.area.name + ':' + def.id;
 		this.exits = def.exits || [];
