@@ -119,8 +119,9 @@ export class Room extends GameEntity {
 
 		const isArrayCoords = (coords: typeof def.coordinates): coords is [number, number, number] => Array.isArray(coords) && coords.length === 3;
 		const isObjectCoords = (coords: typeof def.coordinates): coords is { x: number, y: number, z: number } => Boolean(
-			!Array.isArray(def.coordinates) && def.coordinates?.x && def.coordinates?.y && def.coordinates?.z
+			!Array.isArray(coords) && coords?.x != null && coords?.y != null && coords?.z != null
 		);
+
 		console.log({ coords: def.coordinates, isArrayCoords: isArrayCoords(def.coordinates), isObjectCoords: isObjectCoords(def.coordinates) });
 		this.coordinates = isArrayCoords(def.coordinates) 
 			? {
