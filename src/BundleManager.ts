@@ -150,12 +150,9 @@ export class BundleManager {
 
 			const goalName = path.basename(goalFile, path.extname(goalFile));
 			const loader = require(goalPath);
-			let goalImport = QuestGoal.isPrototypeOf(loader)
-				? loader
-				: loader(srcPath);
 			Logger.verbose(`\t\t${goalName}`);
 
-			this.state.QuestGoalManager.set(goalName, goalImport);
+			this.state.QuestGoalManager.set(goalName, loader);
 		}
 
 		Logger.verbose(`\tENDLOAD: Quest Goals...`);
@@ -173,12 +170,9 @@ export class BundleManager {
 
 			const rewardName = path.basename(rewardFile, path.extname(rewardFile));
 			const loader = require(rewardPath);
-			let rewardImport = QuestReward.isPrototypeOf(loader)
-				? loader
-				: loader(srcPath);
 			Logger.verbose(`\t\t${rewardName}`);
 
-			this.state.QuestRewardManager.set(rewardName, rewardImport);
+			this.state.QuestRewardManager.set(rewardName, loader);
 		}
 
 		Logger.verbose(`\tENDLOAD: Quest Rewards...`);
