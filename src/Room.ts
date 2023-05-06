@@ -122,7 +122,6 @@ export class Room extends GameEntity {
 			!Array.isArray(coords) && coords?.x != null && coords?.y != null && coords?.z != null
 		);
 
-		console.log({ coords: def.coordinates, isArrayCoords: isArrayCoords(def.coordinates), isObjectCoords: isObjectCoords(def.coordinates) });
 		this.coordinates = isArrayCoords(def.coordinates) 
 			? {
 					x: def.coordinates[0],
