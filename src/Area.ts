@@ -240,9 +240,8 @@ export class Area extends GameEntity {
 	hydrate(state: IGameState) {
 		this.setupBehaviors(state.AreaBehaviorManager);
 		const rooms = state.AreaFactory.getDefinition(this.name)?.rooms || [];
-		Logger.warn(`[Area][hydrate] Got rooms: ${rooms}`);
 		for (const roomRef of rooms) {
-			Logger.warn(`[Area][hydrate] Adding ${roomRef}`);
+			Logger.verbose(`[Area][hydrate] Adding ${roomRef}`);
 			const room = state.RoomFactory.create(this, roomRef);
 			this.addRoom(room);
 			state.RoomManager.addRoom(room);
