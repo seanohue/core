@@ -81,6 +81,10 @@ export class Quest extends EventEmitter {
 		this.GameState = GameState;
 	}
 
+	get visibleGoals() {
+		return this.goals.filter((goal) => !goal.config.hidden);
+	}
+
 	/**
 	 * Proxy all events to all the goals
 	 * @param {string} event
@@ -94,6 +98,7 @@ export class Quest extends EventEmitter {
 			return result;
 		}
 
+		// TODO: Consider not proxying all events to hidden goals.
 		this.goals.forEach((goal) => {
 			goal.emit(event, ...args);
 		});
@@ -110,10 +115,31 @@ export class Quest extends EventEmitter {
 	 * @fires Quest#turn-in-ready
 	 * @fires Quest#progress
 	 */
-	onProgressUpdated() {
+	onProgressUpdated(): void {
 		const progress = this.getProgress();
 
 		if (progress.percent >= 100) {
+			// Handle scenario where there are hidden goals to reveal:
+			if (this.visibleGoals.length < this.goals.length) {
+				const nextHiddenGoal = this.goals.find((goal) => {
+					return goal.config.hidden;
+				});
+
+				if (!nextHiddenGoal) {
+					throw new Error(`Quest ${this.id} has no more hidden goals to reveal!`);
+				}
+
+				nextHiddenGoal.config.hidden = false;
+				nextHiddenGoal.emit('reveal');
+				
+				// Get progress again and add reveal messaging to display:
+				const progress = this.getProgress();
+				progress.display = `New goal revealed!\r\n${progress.display}`;
+				this.emit('progress', progress);
+				return;
+			}
+
+			// Handle actual quest completion scenarios:
 			if (this.config.autoComplete) {
 				this.complete();
 			} else {
@@ -138,7 +164,9 @@ export class Quest extends EventEmitter {
 	getProgress() {
 		let overallPercent = 0;
 		let overallDisplay: string[] = [];
-		this.goals.forEach((goal) => {
+
+		// Do not show hidden goals in overall progress
+		this.goals.filter(goal => !goal.config.hidden).forEach((goal) => {
 			const goalProgress = goal.getProgress();
 			overallPercent += goalProgress.percent;
 			overallDisplay.push(goalProgress.display);
