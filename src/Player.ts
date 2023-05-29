@@ -265,7 +265,7 @@ export class Player extends Character {
 					 */
 					newItem.emit('spawn', { type: Player });
 				} catch (e: any) {
-					Logger.error(e?.message);
+					Logger.error(`Error while hydrating equipment for Player ${this.name}: ${e?.message}`);
 				}
 			}
 		} else {
