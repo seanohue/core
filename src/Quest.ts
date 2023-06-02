@@ -117,20 +117,12 @@ export class Quest extends EventEmitter {
 	 */
 	onProgressUpdated(): void {
 		const progress = this.getProgress();
-		console.log({
-			goals: this.goals,
-			visible: this.visibleGoals,
-			progress,
-		});
-		console.log('progress is ', progress);
 		if (progress.percent >= 100) {
 			// Handle scenario where there are hidden goals to reveal:
 			if (this.visibleGoals.length < this.goals.length) {
 				const nextHiddenGoal = this.goals.find((goal) => {
 					return goal.config.hidden;
 				});
-
-				console.log('Have a next hidden goal to reveal: ', nextHiddenGoal?.config?.title || '');
 
 				if (!nextHiddenGoal) {
 					throw new Error(`Quest ${this.id} has no more hidden goals to reveal!`);
@@ -142,7 +134,6 @@ export class Quest extends EventEmitter {
 				// Get progress again and add reveal messaging to display:
 				const progress = this.getProgress();
 				progress.display = `New goal revealed!\r\n${progress.display}`;
-				console.log('Emitting new progress after reveal: ', progress);
 				this.emit('progress', progress);
 				return;
 			}
