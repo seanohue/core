@@ -119,8 +119,10 @@ export class Quest extends EventEmitter {
 		const progress = this.getProgress();
 		console.log({
 			goals: this.goals,
-			visible: this.visibleGoals
+			visible: this.visibleGoals,
+			progress,
 		});
+		console.log('progress is ', progress);
 		if (progress.percent >= 100) {
 			// Handle scenario where there are hidden goals to reveal:
 			if (this.visibleGoals.length < this.goals.length) {
