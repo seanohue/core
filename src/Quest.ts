@@ -181,7 +181,7 @@ export class Quest extends EventEmitter {
 		});
 
 		return {
-			percent: Math.round(overallPercent / this.goals.length),
+			percent: Math.round(overallPercent / this.visibleGoals.length),
 			display: overallDisplay.join('\r\n'),
 		};
 	}
