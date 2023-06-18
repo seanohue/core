@@ -130,6 +130,8 @@ export class Quest extends EventEmitter {
 
 				nextHiddenGoal.config.hidden = false;
 				nextHiddenGoal.emit('reveal');
+
+				console.log('About to reveal ', nextHiddenGoal);
 				
 				// Get progress again and add reveal messaging to display:
 				const progress = this.getProgress();

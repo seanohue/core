@@ -134,7 +134,7 @@ export class QuestFactory {
 						);
 					}
 
-					rewardClass.reward(GameState, instance, reward.config, player);
+					rewardClass.reward(GameState, instance, reward, player);
 					player.emit('questReward', reward);
 				} catch (e) {
 					Logger.warn(`Error in quest ${qid} happened to ${player.name}.`);
