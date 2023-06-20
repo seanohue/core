@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events';
 import { EntityReference } from './EntityReference';
 import { IGameState } from './GameState';
+import { Logger } from './Logger';
 import { Player } from './Player';
 import { IQuestGoalDef, ISerializedQuestGoal, QuestGoal } from './QuestGoal';
 import { IQuestRewardDef } from './QuestReward';
@@ -131,7 +132,7 @@ export class Quest extends EventEmitter {
 				nextHiddenGoal.config.hidden = false;
 				nextHiddenGoal.emit('reveal');
 
-				console.log('About to reveal ', nextHiddenGoal);
+				Logger.verbose(`[Quest][onProgressUpdated] Will reveal next hidden goal: ${nextHiddenGoal.config.title || nextHiddenGoal.config.type || 'Unknown'}`);
 				
 				// Get progress again and add reveal messaging to display:
 				const progress = this.getProgress();
