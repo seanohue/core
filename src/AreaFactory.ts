@@ -1,6 +1,7 @@
 import { Area, IAreaDef } from './Area';
 import { EntityFactory } from './EntityFactory';
 import { EntityReference } from './EntityReference';
+import { Logger } from './Logger';
 
 /**
  * Stores definitions of items to allow for easy creation/cloning of objects
@@ -19,6 +20,7 @@ export class AreaFactory extends EntityFactory<IAreaDef> {
 	create(entityRef: EntityReference): Area {
 		const definition = this.getDefinition(entityRef);
 		if (!definition) {
+			Logger.verbose(`[AreaFactory] No definition found for ${entityRef}, found: ${Array.from(this.entities.keys()).join(', ')}`);
 			throw new Error(
 				'[AreaFactory] No Entity definition found for ' + entityRef
 			);
