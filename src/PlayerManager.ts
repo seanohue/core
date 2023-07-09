@@ -169,7 +169,7 @@ export class PlayerManager extends EventEmitter {
 		}
 		Logger.warn('Serializing...');
 		const serialized = player.serialize();
-		await this.loader.update(player.name, serialized);
+		this.loader.update(player.name, serialized);
 
 		/**
 		 * @event Player#saved

@@ -241,7 +241,7 @@ export class Area extends GameEntity {
 		this.setupBehaviors(state.AreaBehaviorManager);
 		const rooms = state.AreaFactory.getDefinition(this.name)?.rooms || [];
 		for (const roomRef of rooms) {
-			Logger.verbose(`[Area][hydrate] Adding ${roomRef}`);
+			Logger.verbose(`[Area][hydrate][${this.name}] Adding ${roomRef}`);
 			const room = state.RoomFactory.create(this, roomRef);
 			this.addRoom(room);
 			state.RoomManager.addRoom(room);
