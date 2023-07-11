@@ -118,6 +118,7 @@ export class Quest extends EventEmitter {
 	 */
 	onProgressUpdated(): void {
 		const progress = this.getProgress();
+		Logger.verbose(`[Quest][onProgressUpdated][${this.id}] progress: ${progress.percent}%`);
 		if (progress.percent >= 100) {
 			// Handle scenario where there are hidden goals to reveal:
 			if (this.visibleGoals.length < this.goals.length) {
