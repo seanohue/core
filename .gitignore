@@ -4,3 +4,5 @@ coverage
 *.swp
 *.sublime-*
 dist
+
+.DS_Store

@@ -25,6 +25,7 @@ export interface IQuestGoalProgress {
 export interface IQuestGoalConfig {
 	[key: string]: any;
 	hidden?: boolean;
+	addToQuestLogOnCompletion?: string;
 }
 
 export interface IQuestGoalState {
