@@ -17,7 +17,7 @@ import { ISerializedEffect } from './Effect';
 import { SerializedAttributes } from './EffectableEntity';
 import { ItemManager } from './ItemManager';
 
-const uuid = require('uuid/v4');
+import { v4 as uuid } from 'uuid';
 
 export declare interface IItemDef {
 	name: string;
