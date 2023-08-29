@@ -8,7 +8,7 @@ import { Logger } from './Logger';
 import { Room } from './Room';
 import { Scriptable } from './Scriptable';
 
-const uuid = require('uuid');
+const { v4: uuid } = require('uuid');
 
 export interface INpcDef extends ICharacterConfig {
 	area?: string;
