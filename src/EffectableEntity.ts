@@ -308,9 +308,13 @@ export class EffectableEntity extends EventEmitter {
 			}
 
 			if (typeof attrConfig !== 'object' || !('base' in attrConfig)) {
-				throw new Error(
-					`[${this.constructor.name}][${(this as any).entityReference}] Invalid base value given to attributes. ${JSON.stringify(attributes, null, 2)}`
-				);
+				Logger.warn('Invalid attribute config found:', attrConfig, ' deleting config');
+				delete attributes[attr];
+				if (state.AttributeFactory.has(attr)) {
+					Logger.warn('AttributeFactory does have definition for faulty config')
+				} else {
+					Logger.warn('AttributeFactory has no definition for faulty config');
+				}
 			}
 
 			if (!state.AttributeFactory.has(attr)) {
