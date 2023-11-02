@@ -1,5 +1,3 @@
-// import uuid from "uuid/v4";
-
 import { Area } from './Area';
 import { GameEntity } from './GameEntity';
 import {

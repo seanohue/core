@@ -309,8 +309,7 @@ export class EffectableEntity extends EventEmitter {
 
 			if (typeof attrConfig !== 'object' || !('base' in attrConfig)) {
 				throw new Error(
-					'Invalid base value given to attributes.\n' +
-						JSON.stringify(attributes, null, 2)
+					`[${this.constructor.name}][${(this as any).entityReference}] Invalid base value given to attributes. ${JSON.stringify(attributes, null, 2)}`
 				);
 			}
 
