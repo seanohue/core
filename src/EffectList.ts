@@ -225,7 +225,9 @@ export class EffectList {
 			if (effect.paused) {
 				continue;
 			}
+			console.log('Before modifying attribute ', attrName, 'with effect ', effect.name, ': ', attrValue);
 			attrValue = effect.modifyAttribute(attrName, attrValue);
+			console.log('After modifying attribute ', attrName, 'with effect ', effect.name, ': ', attrValue);
 		}
 
 		return attrValue;
