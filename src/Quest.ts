@@ -149,9 +149,9 @@ export class Quest extends EventEmitter {
 
 				Logger.verbose(`[Quest][onProgressUpdated] Will reveal next hidden goal: ${nextHiddenGoal.config.title || nextHiddenGoal.config.type || 'Unknown'}`);
 				
-				// Get progress again and add reveal messaging to display:
+				// Get progress again and add reveal title:
 				const progress = this.getProgress();
-				progress.display = `New goal revealed!\r\n${progress.display}`;
+				progress.title = 'New Goal!';
 				this.emit('progress', progress);
 				return;
 			}
@@ -176,7 +176,7 @@ export class Quest extends EventEmitter {
 	}
 
 	/**
-	 * @return {{ percent: number, display: string }}
+	 * @return {{ percent: number, display: string, title?: string }}
 	 */
 	getProgress() {
 		let overallPercent = 0;
@@ -192,6 +192,7 @@ export class Quest extends EventEmitter {
 		return {
 			percent: Math.round(overallPercent / this.visibleGoals.length),
 			display: overallDisplay.join('\r\n'),
+			title: 'Goal Progress',
 		};
 	}
 
