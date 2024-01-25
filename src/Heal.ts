@@ -31,5 +31,6 @@ export class Heal extends Damage {
 		 * @param {number} finalAmount
 		 */
 		target.emit('healed', this, finalAmount);
+		return finalAmount;
 	}
 }

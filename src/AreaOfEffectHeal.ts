@@ -22,13 +22,13 @@ export class AreaOfEffectHeal extends Heal {
 				);
 			}
 
-			super.commit(room);
-			return;
+			return super.commit(room) || 0;
 		}
 
 		const targets = this.getValidTargets(room);
+		let totalHealing = 0;
 		for (const target of targets) {
-			super.commit(target);
+			totalHealing += super.commit(target);
 		}
 
 		/**
@@ -36,7 +36,9 @@ export class AreaOfEffectHeal extends Heal {
 		 * @param {Heal} heal
 		 * @param {Array<Character>} targets
 		 */
-		room.emit('areaHeal', this, targets);
+		room.emit('areaHeal', this, targets, totalHealing);
+
+		return totalHealing;
 	}
 
 	/**
