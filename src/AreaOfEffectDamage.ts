@@ -22,13 +22,13 @@ export class AreaOfEffectDamage extends Damage {
 				);
 			}
 
-			super.commit(room);
-			return;
+			return super.commit(room) || 0;
 		}
 
 		const targets = this.getValidTargets(room);
+		let totalDamage = 0;
 		for (const target of targets) {
-			super.commit(target);
+			totalDamage += super.commit(target);
 		}
 
 		/**
@@ -36,7 +36,9 @@ export class AreaOfEffectDamage extends Damage {
 		 * @param {Damage} damage
 		 * @param {Array<Character>} targets
 		 */
-		room.emit('areaDamage', this, targets);
+		room.emit('areaDamage', this, targets, totalDamage);
+
+		return totalDamage;
 	}
 
 	/**
