@@ -85,5 +85,7 @@ export class Damage {
 		 * @param {Number} finalAmount
 		 */
 		target.emit('damaged', this, finalAmount);
+
+		return finalAmount;
 	}
 }
