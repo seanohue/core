@@ -188,7 +188,7 @@ export class Skill {
 		let effect = this.state.EffectFactory.create(this.effect, {
 			description: this.info(player),
 		});
-		effect = this.configureEffect(effect);
+		effect = this.configureEffect(effect, player);
 		effect.skill = this;
 		player.addEffect(effect);
 		this.run(player);
