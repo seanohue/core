@@ -49,7 +49,7 @@ export interface ISkillResource {
  * @property {SkillType}        type
  */
 export class Skill {
-	configureEffect: Function;
+	configureEffect: (effect: Effect, target: PlayerOrNpc) => Effect;
 	cooldownGroup: string | null;
 	cooldownLength: ISkillCooldown | number | null;
 	effect: string | null;
