@@ -12,8 +12,10 @@ import {
 import { SkillFlag } from './SkillFlag';
 import { SkillType } from './SkillType';
 
+export type ConfigureEffectFn = (effect: Effect, target: PlayerOrNpc) => Effect;
+
 export interface ISkillOptions {
-	configureEffect?: Function;
+	configureEffect?: ConfigureEffectFn;
 	cooldown?: number | ISkillCooldown;
 	effect?: string;
 	flags?: any[];
@@ -49,7 +51,7 @@ export interface ISkillResource {
  * @property {SkillType}        type
  */
 export class Skill {
-	configureEffect: (effect: Effect, target: PlayerOrNpc) => Effect;
+	configureEffect: ConfigureEffectFn;
 	cooldownGroup: string | null;
 	cooldownLength: ISkillCooldown | number | null;
 	effect: string | null;
