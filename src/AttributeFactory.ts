@@ -69,7 +69,7 @@ export class AttributeFactory {
 
 		return new Attribute(
 			name,
-			base || def.base,
+			base ?? def.base,
 			delta,
 			def.formula,
 			def.metadata || {}
