@@ -223,6 +223,13 @@ export class Skill {
 			return;
 		}
 
+		/**
+		 * Create cooldown effect.
+		 * Setting the type by appending the ID of the skill is needed
+		 * so that each skill has its own unique cooldown effect.
+		 */
+		const effect = this.createCooldownEffect();
+		effect.config.type = `cooldown:${this.id}`;
 		character.addEffect(this.createCooldownEffect());
 	}
 
