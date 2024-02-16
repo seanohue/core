@@ -202,6 +202,10 @@ export class Skill {
 	 */
 	onCooldown(character: PlayerOrNpc) {
 		for (const effect of character.effects.entries()) {
+			console.log('Active Effect: ', { 
+				id: effect.id,
+				cooldownId: effect.state.cooldownId,
+			});
 			if (
 				effect.id === 'cooldown' &&
 				effect.state.cooldownId === this.getCooldownId()
