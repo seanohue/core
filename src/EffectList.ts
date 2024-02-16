@@ -120,8 +120,6 @@ export class EffectList {
 			throw new Error('Cannot add effect, already has a target.');
 		}
 		
-		console.log('Adding effect: ', effect.id, effect.state);
-
 		// create deep clone of state before proceeding
 		effect.state = JSON.parse(JSON.stringify(effect.state));
 

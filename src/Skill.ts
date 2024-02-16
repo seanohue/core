@@ -201,15 +201,9 @@ export class Skill {
 	 * @return {boolean|Effect} If on cooldown returns the cooldown effect
 	 */
 	onCooldown(character: PlayerOrNpc) {
-		console.log('this effect: ', this.getCooldownId(), this.id);
 		for (const effect of character.effects.entries()) {
-			console.log('Active Effect: ', { 
-				id: effect.id,
-				cooldownId: effect.state.cooldownId,
-				type: effect.config.type,
-			});
 			if (
-				effect.id=== 'cooldown' &&
+				effect.id === 'cooldown' &&
 				effect.state.cooldownId === this.getCooldownId()
 			) {
 				return effect;
