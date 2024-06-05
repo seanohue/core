@@ -6,6 +6,7 @@ export interface IQuestGoalDef {
 	name: string;
 	type: string;
 	config: IQuestGoalConfig;
+	peers: string[];
 }
 
 export interface ISerializedQuestGoal {
@@ -42,18 +43,20 @@ export class QuestGoal<
 	TConfig extends IQuestGoalConfig = Record<string, unknown>,
 	TState extends IQuestGoalState = Record<string, unknown>
 > extends EventEmitter {
+	name: string;
 	config: TConfig;
 	quest: Quest;
 	state: TState;
 	player: Player;
+	peers: string[];
 	/**
 	 * @param {Quest} quest Quest this goal is for
 	 * @param {object} config
 	 * @param {Player} player
 	 */
-	constructor(quest: Quest, config: TConfig, player: Player) {
+	constructor(quest: Quest, config: TConfig, player: Player, name: string) {
 		super();
-
+		this.name = name;
 		this.config = Object.assign(
 			{
 				// no defaults currently
@@ -63,6 +66,11 @@ export class QuestGoal<
 		this.quest = quest;
 		this.state = {} as TState;
 		this.player = player;
+		this.peers = [];
+	}
+
+	setPeers(peers: string[]) {
+		this.peers = peers;
 	}
 
 	getProgress(): IQuestGoalProgress {
@@ -76,7 +84,13 @@ export class QuestGoal<
 	/**
 	 * Put any cleanup activities after the quest is finished here
 	 */
-	complete(): void {}
+	complete(): void {
+		this.quest.findPeers(this).forEach((peer) => {
+			if (peer) {
+				peer.complete();
+			}
+		});
+	}
 
 	serialize(): ISerializedQuestGoal {
 		return {

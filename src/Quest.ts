@@ -218,6 +218,14 @@ export class Quest extends EventEmitter {
 		});
 	}
 
+	findGoalByName(name: string) {
+		return this.goals.find((goal) => goal.name === name);
+	}
+
+	findPeers(goal: QuestGoal) {
+		return goal.peers.map((peerName) => this.findGoalByName(peerName));
+	}
+
 	/**
 	 * @fires Quest#complete
 	 */
