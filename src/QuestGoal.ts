@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import { Logger } from './Logger';
 import { Player } from './Player';
 import { Quest } from './Quest';
 
@@ -6,7 +7,7 @@ export interface IQuestGoalDef {
 	name: string;
 	type: string;
 	config: IQuestGoalConfig;
-	peers: string[];
+	peers: string;
 }
 
 export interface ISerializedQuestGoal {
@@ -69,8 +70,13 @@ export class QuestGoal<
 		this.peers = [];
 	}
 
-	setPeers(peers: string[]) {
-		this.peers = peers;
+	setPeers(peers: string | void) {
+		if (peers && peers.length) {
+			this.peers = peers.split(',').map(peer => peer.trim());
+			Logger.warn('Passed valid peers for quest goal', this.name, this.peers);
+		} else {
+			Logger.warn('Not passed valid peers for quest goal', this.name);
+		}
 	}
 
 	getProgress(): IQuestGoalProgress {
