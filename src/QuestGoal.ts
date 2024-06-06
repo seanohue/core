@@ -84,7 +84,7 @@ export class QuestGoal<
 		const completedAsPeer = this.state.completedAsPeer;
 		return {
 			display: completedAsPeer 
-				? this.config.title ? `${this.config.title}: X` : '' 
+				? this.config.title ? `${this.config.title}: [X]` : '' 
 				: progress.display,
 			percent: completedAsPeer ? 100 : progress.percent,
 		};
@@ -109,12 +109,19 @@ export class QuestGoal<
 	 * set their `completedAsPeer` to true and do not handle any further completion.
 	 */
 	complete({ completedAsPeer = false } = {}): void {
-		Logger.warn(`[QuestGoal] Completed goal ${this.name} for player ${this.player.name}`);
+		Logger.warn(`[QuestGoal] Completed goal ${this.name} for player ${this.player.name}: `, { completedAsPeer });
+		if (this.state.completedAsPeer) {
+			if (!completedAsPeer) Logger.warn(`[QuestGoal] Goal ${this.name} already completed as peer`);
+			return;
+		}
+
 		this.quest.findPeers(this).forEach((peer) => {
 			if (peer) {
 				peer.state.completedAsPeer = true;
-				if (!completedAsPeer) peer.complete({ completedAsPeer: true });
-				Logger.warn('[QuestGoal] Completing peer goal: ', peer.name);
+				if (!completedAsPeer) {
+					Logger.warn('[QuestGoal] Completing peer goal: ', peer.name);
+					peer.complete({ completedAsPeer: true });
+				}
 			}
 		});
 	}
