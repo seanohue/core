@@ -123,14 +123,20 @@ export class Quest extends EventEmitter {
 
 	addGoal(goal: QuestGoal) {
 		this.goals.push(goal);
-		goal.on('progress', () => this.onProgressUpdated());
+		goal.on('progress', () => this.onProgressUpdated(goal));
 	}
 
 	/**
 	 * @fires Quest#turn-in-ready
 	 * @fires Quest#progress
 	 */
-	onProgressUpdated(): void {
+	onProgressUpdated(goal: QuestGoal): void {
+		const goalProgress = goal.getProgress();
+		if (goalProgress.percent >= 100) {
+			Logger.verbose(`[Quest][onProgressUpdated][${this.id}] Goal ${goal.name} completed`);
+			goal.complete();
+		}
+
 		const progress = this.getProgress();
 		Logger.verbose(`[Quest][onProgressUpdated][${this.id}] progress: ${progress.percent}%`);
 		if (progress.percent >= 100) {
