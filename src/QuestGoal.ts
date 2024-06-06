@@ -83,7 +83,9 @@ export class QuestGoal<
 		const progress = this.getProgress();
 		const completedAsPeer = this.state.completedAsPeer;
 		return {
-			display: completedAsPeer ? '-x-' : progress.display,
+			display: completedAsPeer 
+				? this.config.title ? `${this.config.title}: X` : '' 
+				: progress.display,
 			percent: completedAsPeer ? 100 : progress.percent,
 		};
 	}
@@ -110,7 +112,7 @@ export class QuestGoal<
 		Logger.warn(`[QuestGoal] Completed goal ${this.name} for player ${this.player.name}`);
 		this.quest.findPeers(this).forEach((peer) => {
 			if (peer) {
-				peer.state.completedAsPeer = completedAsPeer;
+				peer.state.completedAsPeer = true;
 				if (!completedAsPeer) peer.complete({ completedAsPeer: true });
 				Logger.warn('[QuestGoal] Completing peer goal: ', peer.name);
 			}
