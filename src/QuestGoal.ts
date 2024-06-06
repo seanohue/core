@@ -91,11 +91,12 @@ export class QuestGoal<
 	 * Put any cleanup activities after the quest is finished here
 	 */
 	complete(): void {
+		Logger.warn(`[QuestGoal] Completed goal ${this.name} for player ${this.player.name}`);
 		this.quest.findPeers(this).forEach((peer) => {
 			if (peer) {
 				peer.state.completedAsPeer = true;
 				peer.complete();
-				Logger.warn('Completing peer goal: ', peer.name);
+				Logger.warn('[QuestGoal] Completing peer goal: ', peer.name);
 			}
 		});
 	}
