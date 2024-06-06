@@ -84,7 +84,7 @@ export class Quest extends EventEmitter {
 
 	get fullDescription() {
 		const description = this.config.description;
-		const finishedGoals = this.goals.filter((goal) => goal.getProgress().percent >= 100 && goal.config.addToQuestLogOnCompletion);
+		const finishedGoals = this.goals.filter((goal) => goal.getProgress().percent >= 100 && goal.config.addToQuestLogOnCompletion && !goal.state.completedAsPeer);
 		const finishedGoalsTextToAddToQuestLog = finishedGoals.map((goal) => {
 			return goal.config.addToQuestLogOnCompletion || '';
 		}).join('\n\n');

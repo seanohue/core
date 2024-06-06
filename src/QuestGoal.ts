@@ -93,6 +93,7 @@ export class QuestGoal<
 	complete(): void {
 		this.quest.findPeers(this).forEach((peer) => {
 			if (peer) {
+				peer.state.completedAsPeer = true;
 				peer.complete();
 			}
 		});
