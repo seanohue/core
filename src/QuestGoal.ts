@@ -88,14 +88,21 @@ export class QuestGoal<
 	}
 
 	/**
-	 * Put any cleanup activities after the quest is finished here
+	 * Put any cleanup activities after the quest is finished here in an override
+	 * and call super.complete() at the end.
+	 * 
+	 * We keep track of whether or not the goal was completed as a peer so we can
+	 * decide whether or not to show a completion message in the quest log, and
+	 * also to prevent a stack overflow, in other words the goal that is _actually_
+	 * completed will take care of completing all of its peers and then the peers
+	 * set their `completedAsPeer` to true and do not handle any further completion.
 	 */
-	complete(): void {
+	complete({ completedAsPeer = false } = {}): void {
 		Logger.warn(`[QuestGoal] Completed goal ${this.name} for player ${this.player.name}`);
 		this.quest.findPeers(this).forEach((peer) => {
 			if (peer) {
-				peer.state.completedAsPeer = true;
-				peer.complete();
+				peer.state.completedAsPeer = completedAsPeer;
+				if (!completedAsPeer) peer.complete({ completedAsPeer: true });
 				Logger.warn('[QuestGoal] Completing peer goal: ', peer.name);
 			}
 		});
