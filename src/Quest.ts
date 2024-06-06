@@ -190,7 +190,7 @@ export class Quest extends EventEmitter {
 
 		// Do not show hidden goals in overall progress
 		this.visibleGoals.forEach((goal) => {
-			const goalProgress = goal.getProgress();
+			const goalProgress = goal._getProgress();
 			overallPercent += goalProgress.percent;
 			overallDisplay.push(goalProgress.display);
 		});

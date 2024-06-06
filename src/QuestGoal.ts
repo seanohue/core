@@ -79,6 +79,15 @@ export class QuestGoal<
 		}
 	}
 
+	_getProgress(): IQuestGoalProgress {
+		const progress = this.getProgress();
+		const completedAsPeer = this.state.completedAsPeer;
+		return {
+			display: completedAsPeer ? '-x-' : progress.display,
+			percent: completedAsPeer ? 100 : progress.percent,
+		};
+	}
+
 	getProgress(): IQuestGoalProgress {
 		return {
 			percent: 0,
@@ -111,7 +120,7 @@ export class QuestGoal<
 	serialize(): ISerializedQuestGoal {
 		return {
 			state: this.state as Record<string, unknown>,
-			progress: this.getProgress(),
+			progress: this._getProgress(),
 			config: this.config,
 		};
 	}
