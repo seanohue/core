@@ -95,6 +95,7 @@ export class QuestGoal<
 			if (peer) {
 				peer.state.completedAsPeer = true;
 				peer.complete();
+				Logger.warn('Completing peer goal: ', peer.name);
 			}
 		});
 	}
