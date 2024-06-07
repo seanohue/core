@@ -84,7 +84,7 @@ export class Quest extends EventEmitter {
 
 	get fullDescription() {
 		const description = this.config.description;
-		const finishedGoals = this.goals.filter((goal) => goal.getProgress().percent >= 100 && goal.config.addToQuestLogOnCompletion);
+		const finishedGoals = this.goals.filter((goal) => goal.getProgress().percent >= 100 && goal.config.addToQuestLogOnCompletion && !goal.state.completedAsPeer);
 		const finishedGoalsTextToAddToQuestLog = finishedGoals.map((goal) => {
 			return goal.config.addToQuestLogOnCompletion || '';
 		}).join('\n\n');
@@ -123,14 +123,20 @@ export class Quest extends EventEmitter {
 
 	addGoal(goal: QuestGoal) {
 		this.goals.push(goal);
-		goal.on('progress', () => this.onProgressUpdated());
+		goal.on('progress', () => this.onProgressUpdated(goal));
 	}
 
 	/**
 	 * @fires Quest#turn-in-ready
 	 * @fires Quest#progress
 	 */
-	onProgressUpdated(): void {
+	onProgressUpdated(goal: QuestGoal): void {
+		const goalProgress = goal.getProgress();
+		if (goalProgress.percent >= 100) {
+			Logger.verbose(`[Quest][onProgressUpdated][${this.id}] Goal ${goal.name} completed`);
+			goal.complete();
+		}
+
 		const progress = this.getProgress();
 		Logger.verbose(`[Quest][onProgressUpdated][${this.id}] progress: ${progress.percent}%`);
 		if (progress.percent >= 100) {
@@ -184,7 +190,7 @@ export class Quest extends EventEmitter {
 
 		// Do not show hidden goals in overall progress
 		this.visibleGoals.forEach((goal) => {
-			const goalProgress = goal.getProgress();
+			const goalProgress = goal._getProgress();
 			overallPercent += goalProgress.percent;
 			overallDisplay.push(goalProgress.display);
 		});
@@ -216,6 +222,14 @@ export class Quest extends EventEmitter {
 		(this.state as ISerializedQuestGoal[]).forEach((goalState, i: number) => {
 			this.goals[i].hydrate(goalState.state);
 		});
+	}
+
+	findGoalByName(name: string) {
+		return this.goals.find((goal) => goal.name === name);
+	}
+
+	findPeers(goal: QuestGoal) {
+		return goal.peers.map((peerName) => this.findGoalByName(peerName));
 	}
 
 	/**

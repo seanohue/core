@@ -69,6 +69,7 @@ export class AttributeFactory {
 
 		return new Attribute(
 			name,
+			// This may be related to issues with base of zero being set inappropriately?
 			base ?? def.base,
 			delta,
 			def.formula,

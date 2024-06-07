@@ -98,7 +98,11 @@ export class QuestFactory {
 					`QuestFactory did not find the goal with the type [${goal.type}]`
 				);
 			}
-			instance.addGoal(new goalType(instance, goal.config, player));
+			const newGoal = new goalType(instance, goal.config, player, goal.name);
+			instance.addGoal(newGoal);
+			if (goal.peers?.length) {
+				newGoal.setPeers(goal.peers);
+			}
 		}
 
 		instance.on('progress', (progress: ISerializedQuestGoal['progress']) => {
