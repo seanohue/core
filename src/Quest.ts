@@ -142,6 +142,7 @@ export class Quest extends EventEmitter {
 		if (progress.percent >= 100) {
 			// Handle scenario where there are hidden goals to reveal:
 			if (this.visibleGoals.length < this.goals.length) {
+				console.log('Revealing hidden goal');
 				const nextHiddenGoal = this.goals.find((goal) => {
 					return goal.config.hidden;
 				});
@@ -162,10 +163,14 @@ export class Quest extends EventEmitter {
 				return;
 			}
 
+			console.log('No hidden goals to reveal');
+
 			// Handle actual quest completion scenarios:
 			if (this.config.autoComplete) {
+				console.log('Autocompleting');
 				this.complete();
 			} else {
+				console.log('Not autocompleteable, need to turn in...');
 				/**
 				 * @event Quest#turn-in-ready
 				 */
