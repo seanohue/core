@@ -193,10 +193,14 @@ export class Quest extends EventEmitter {
 			const goalProgress = goal._getProgress();
 			overallPercent += goalProgress.percent;
 			overallDisplay.push(goalProgress.display);
+			console.log('Got goal progress: ', goal.name , goalProgress.display, goalProgress.percent);
 		});
 
+		console.log('Overall percent: ', overallPercent, this.visibleGoals.length);
+		overallPercent = this.visibleGoals.length ? Math.round(overallPercent / this.visibleGoals.length) : 0;
+		console.log('Overall percent: ', overallPercent, this.visibleGoals.length);
 		return {
-			percent: Math.round(overallPercent / this.visibleGoals.length),
+			percent: overallPercent,
 			display: overallDisplay.join('\r\n'),
 			title: 'Goal Progress',
 		};
