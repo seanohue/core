@@ -151,19 +151,22 @@ export class Quest extends EventEmitter {
 					throw new Error(`Quest ${this.id} has no more hidden goals to reveal!`);
 				}
 
+				Logger.verbose(`[Quest][onProgressUpdated] Will reveal next hidden goal: ${nextHiddenGoal.config.title || nextHiddenGoal.config.type || 'Unknown'}`);
 				nextHiddenGoal.config.hidden = false;
 				nextHiddenGoal.emit('reveal');
-
-				Logger.verbose(`[Quest][onProgressUpdated] Will reveal next hidden goal: ${nextHiddenGoal.config.title || nextHiddenGoal.config.type || 'Unknown'}`);
+				this.player.emit('questGoalReveal', this, nextHiddenGoal);
 				
 				// Get progress again and add reveal title:
 				const progress = this.getProgress();
 				progress.title = 'New Goal!';
 				this.emit('progress', progress);
-				return;
+				if (progress.percent < 100) {
+					console.log('Returning since quest is not complete after goal reveal.');
+					return;
+				}
 			}
 
-			console.log('No hidden goals to reveal');
+			console.log('No further hidden goals to reveal');
 
 			// Handle actual quest completion scenarios:
 			if (this.config.autoComplete) {
@@ -201,7 +204,6 @@ export class Quest extends EventEmitter {
 			console.log('Got goal progress: ', goal.name , goalProgress.display, goalProgress.percent);
 		});
 
-		console.log('Overall percent: ', overallPercent, this.visibleGoals.length);
 		overallPercent = this.visibleGoals.length ? Math.round(overallPercent / this.visibleGoals.length) : 0;
 		console.log('Overall percent: ', overallPercent, this.visibleGoals.length);
 		return {
