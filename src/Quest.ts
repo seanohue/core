@@ -142,7 +142,6 @@ export class Quest extends EventEmitter {
 		if (progress.percent >= 100) {
 			// Handle scenario where there are hidden goals to reveal:
 			if (this.visibleGoals.length < this.goals.length) {
-				console.log('Revealing hidden goal');
 				const nextHiddenGoal = this.goals.find((goal) => {
 					return goal.config.hidden;
 				});
@@ -161,19 +160,14 @@ export class Quest extends EventEmitter {
 				progress.title = 'New Goal!';
 				this.emit('progress', progress);
 				if (progress.percent < 100) {
-					console.log('Returning since quest is not complete after goal reveal.');
 					return;
 				}
 			}
 
-			console.log('No further hidden goals to reveal');
-
 			// Handle actual quest completion scenarios:
 			if (this.config.autoComplete) {
-				console.log('Autocompleting');
 				this.complete();
 			} else {
-				console.log('Not autocompleteable, need to turn in...');
 				/**
 				 * @event Quest#turn-in-ready
 				 */
@@ -201,11 +195,9 @@ export class Quest extends EventEmitter {
 			const goalProgress = goal._getProgress();
 			overallPercent += goalProgress.percent;
 			overallDisplay.push(goalProgress.display);
-			console.log('Got goal progress: ', goal.name , goalProgress.display, goalProgress.percent);
 		});
 
 		overallPercent = this.visibleGoals.length ? Math.round(overallPercent / this.visibleGoals.length) : 0;
-		console.log('Overall percent: ', overallPercent, this.visibleGoals.length);
 		return {
 			percent: overallPercent,
 			display: overallDisplay.join('\r\n'),
