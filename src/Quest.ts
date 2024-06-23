@@ -76,6 +76,8 @@ export class Quest extends EventEmitter {
 			config
 		);
 
+		console.log('Config on construction is: ', this.config, ' after being passed ', config);
+
 		this.player = player;
 		this.goals = [];
 		this.state = [];
