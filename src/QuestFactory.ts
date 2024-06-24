@@ -55,7 +55,7 @@ export class QuestFactory {
 		const tracker = player.questTracker;
 
 		if (tracker.completedQuests.has(questRef) && !quest.config.repeatable) {
-			console.log('Quest already completed and is not repeatable: ', quest.config);
+			Logger.verbose(`[QuestFactory] Quest ${questRef} has been completed and is not repeatable.`);
 			return false;
 		}
 
