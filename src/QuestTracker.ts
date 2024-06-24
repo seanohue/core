@@ -11,6 +11,7 @@ export interface IQuestTrackerActiveDef {
 export interface IQuestTrackerCompletedDef {
 	started: string;
 	completedAt: string;
+	completedTimes: number;
 }
 
 export type SerializedQuestTracker = {
@@ -89,9 +90,16 @@ export class QuestTracker {
 			throw new Error(`Quest ${qid} not started, cannot complete.`);
 		}
 
+		let completedTimes = 1;
+		const alreadyCompleted = this.completedQuests.get(qid);
+		if (alreadyCompleted) {
+			completedTimes = alreadyCompleted.completedTimes + 1;
+		}
+
 		this.completedQuests.set(qid, {
 			started: this.activeQuests.get(qid)?.started || new Date().toJSON(),
 			completedAt: new Date().toJSON(),
+			completedTimes,
 		});
 
 		this.activeQuests.delete(qid);
