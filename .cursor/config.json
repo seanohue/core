@@ -1,0 +1,21 @@
+{
+  "rules": {
+    "default": ".cursor/core-overview.mdc",
+    "patterns": [
+      {
+        "pattern": "src/**/*",
+        "rules": [
+          ".cursor/core-overview.mdc",
+          ".cursor/core-src.mdc"
+        ]
+      },
+      {
+        "pattern": "test/**/*",
+        "rules": [
+          ".cursor/core-overview.mdc",
+          ".cursor/core-tests.mdc"
+        ]
+      }
+    ]
+  }
+} 

@@ -1,0 +1,15 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Ranvier Core Engine (Modified)
+
+This is a modified version of the Ranvier Core engine that serves as the foundation for the Mnemosyne game server. It provides the basic infrastructure and systems that the game builds upon.
+
+Key features:
+- Event system
+- Command system
+- Entity system
+- State management
+- Plugin architecture 

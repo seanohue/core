@@ -1,0 +1,7 @@
+# core/test/
+
+Contains test suites for the core engine. This includes:
+- Unit tests for core systems
+- Integration tests for system interactions
+- Test utilities and helpers
+- Plugin testing infrastructure 

@@ -1,0 +1,16 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# core/src/
+
+Contains the core engine source code. This includes:
+- Core systems implementation
+- Base classes and interfaces
+- Plugin system
+- Event handling
+- Command processing
+- Entity management 
+
+Most of these are done in with class-based architecture and should remain so.
