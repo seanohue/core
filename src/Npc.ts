@@ -105,7 +105,7 @@ export class Npc extends Scriptable(Character) {
 		 * @event Npc#enterRoom
 		 * @param {Room} room
 		 */
-		this.emit('enterRoom', nextRoom);
+		this.emit('enterRoom', nextRoom, prevRoom);
 	}
 
 	hydrate(state: IGameState) {

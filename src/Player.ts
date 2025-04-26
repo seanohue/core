@@ -217,7 +217,7 @@ export class Player extends Character {
 		 * @event Player#enterRoom
 		 * @param {Room} room
 		 */
-		this.emit('enterRoom', nextRoom);
+		this.emit('enterRoom', nextRoom, prevRoom);
 	}
 
 	save(callback?: Function) {
