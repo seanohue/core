@@ -40,7 +40,7 @@ export class Npc extends Scriptable(Character) {
   sourceRoom: Room | null;
 	__pruned: boolean = false;
 	
-	static validate: (keyof Npc)[] = ['name', 'id'];
+	static validate: string[] = ['name', 'id'];
 	constructor(area: Area, data: INpcDef) {
 		super(data);
 
