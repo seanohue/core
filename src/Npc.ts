@@ -10,6 +10,37 @@ import { Scriptable } from './Scriptable';
 
 import { v4 as uuid } from 'uuid';
 
+/**
+ * CMS equipment is an `area:id` string, `{ entityReference }`, or a depth-1 item doc (`id` + `area`).
+ * A bare id cannot be passed to ItemFactory.
+ */
+export function npcEquipmentEntityReference(value: unknown): string | null {
+	if (typeof value === 'string') {
+		return value.includes(':') ? value : null;
+	}
+	if (!value || typeof value !== 'object') {
+		return null;
+	}
+
+	const slot = value as { entityReference?: unknown; id?: unknown; area?: unknown };
+	if (typeof slot.entityReference === 'string' && slot.entityReference.includes(':')) {
+		return slot.entityReference;
+	}
+
+	const areaId =
+		typeof slot.area === 'string'
+			? slot.area
+			: slot.area &&
+				  typeof slot.area === 'object' &&
+				  typeof (slot.area as { id?: unknown }).id === 'string'
+				? (slot.area as { id: string }).id
+				: '';
+	if (areaId && typeof slot.id === 'string' && slot.id) {
+		return `${areaId}:${slot.id}`;
+	}
+	return null;
+}
+
 export interface INpcDef extends ICharacterConfig {
 	area?: string;
 	script?: string;
@@ -28,7 +59,7 @@ export class Npc extends Scriptable(Character) {
 	area: Area;
 	script?: string;
 	behaviors?: Map<string, any>;
-	defaultEquipment: Record<string, { entityReference: EntityReference }>;
+	defaultEquipment: Record<string, unknown>;
 	defaultItems: EntityReference[];
 	description: string;
 	entityReference: EntityReference;
@@ -129,14 +160,21 @@ export class Npc extends Scriptable(Character) {
 			newItem.emit('spawn');
 		}
 
-		for (const [slot, defaultEqId] of Object.entries(this.defaultEquipment)) {
+		for (const [slot, slotValue] of Object.entries(this.defaultEquipment || {})) {
+			const entityReference = npcEquipmentEntityReference(slotValue);
+			if (!entityReference) {
+				if (slotValue) {
+					Logger.warn(
+						`[Npc][hydrate] Skipping equipment slot ${slot} on ${this.name}: expected an area:id entity reference.`
+					);
+				}
+				continue;
+			}
+
 			Logger.verbose(
-				`\tDIST: Equipping item [${defaultEqId}] to npc [${this.name}] in slot [${slot}]`
+				`\tDIST: Equipping item [${entityReference}] to npc [${this.name}] in slot [${slot}]`
 			);
-			const newItem = state.ItemFactory.create(
-				this.area,
-				defaultEqId.entityReference
-			);
+			const newItem = state.ItemFactory.create(this.area, entityReference);
 			newItem.hydrate(state);
 			state.ItemManager.add(newItem);
 			this.equip(newItem, slot);

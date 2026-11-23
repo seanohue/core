@@ -237,19 +237,24 @@ export class Character extends Metadatable(EffectableEntity) {
 	}
 
 	/**
-	 * Remove equipment in a given slot and move it to the character's inventory
+	 * Remove equipment in a given slot and (by default) move it to the character's inventory.
 	 * @param {string} slot
+	 * @param {object} [options]
+	 * @param {boolean} [options.skipInventory] When true, emit unequip events and clear the slot
+	 *   but do not add the item to inventory (and do not throw InventoryFullError). Used when the
+	 *   item is moving somewhere other than the bag (e.g. account vault).
 	 *
 	 * @throws InventoryFullError
 	 * @fires Item#unequip
 	 * @fires Character#unequip
 	 */
-	unequip(slot: string) {
+	unequip(slot: string, options: { skipInventory?: boolean } = {}) {
 		if (!(this.equipment instanceof Map)) {
 			throw new Error(`Character ${this.name} equipment is not hydrated.`);
 		}
 
-		if (this.isInventoryFull()) {
+		const skipInventory = Boolean(options.skipInventory);
+		if (!skipInventory && this.isInventoryFull()) {
 			throw new InventoryFullError();
 		}
 
@@ -272,7 +277,9 @@ export class Character extends Metadatable(EffectableEntity) {
 		 * @param {Item} item
 		 */
 		this.emit('unequip', slot, item);
-		this.addItem(item);
+		if (!skipInventory) {
+			this.addItem(item);
+		}
 	}
 
 	/**
