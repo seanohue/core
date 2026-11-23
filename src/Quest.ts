@@ -16,6 +16,14 @@ export interface IQuestDef {
 	level: number;
 	autoComplete?: boolean;
 	repeatable?: boolean;
+	/** Eidolon id or relationship. Blank means any leader. */
+	tendency?: unknown;
+	/** Inclusive earned-lead floor. */
+	minWorldAlignment?: number;
+	/** Inclusive earned-lead ceiling. */
+	maxWorldAlignment?: number;
+	/** Active quest cannot complete while the alignment gate fails. Progress is kept. */
+	suspendOutsideBand?: boolean;
 	rewards: IQuestRewardDef[];
 	goals: IQuestGoalDef[];
 	started?: number;
@@ -239,6 +247,11 @@ export class Quest extends EventEmitter {
 	 * @fires Quest#complete
 	 */
 	complete() {
+		const gate = (this.GameState as { questCompletionHeld?: (quest: Quest) => boolean }).questCompletionHeld;
+		if (typeof gate === 'function' && gate(this)) {
+			this.player.emit('questCompletionHeld', this);
+			return;
+		}
 		/**
 		 * @event Quest#complete
 		 */

@@ -3,6 +3,7 @@ import { IGameState } from './GameState';
 import { Logger } from './Logger';
 import { Player } from './Player';
 import { IQuestDef, ISerializedQuestDef, Quest } from './Quest';
+import { IQuestRewardDef } from './QuestReward';
 import { ISerializedQuestGoal } from './QuestGoal';
 
 export interface IQuestFactoryDef {
@@ -137,6 +138,16 @@ export class QuestFactory {
 						throw new Error(
 							`Quest [${qid}] has invalid reward type ${reward.type}`
 						);
+					}
+
+					const allowed = (
+						GameState as { questRewardAllowed?: (reward: IQuestRewardDef) => boolean }
+					).questRewardAllowed;
+					if (typeof allowed === 'function' && !allowed(reward)) {
+						Logger.verbose(
+							`[QuestFactory] Skipping reward ${reward.type} on ${qid}; world alignment is outside its band.`
+						);
+						continue;
 					}
 
 					rewardClass.reward(GameState, instance, reward, player);

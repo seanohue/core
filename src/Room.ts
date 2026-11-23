@@ -52,6 +52,31 @@ export interface IRoomNpcDef {
 	id: string;
 	maxLoad?: number;
 	respawnChance?: number; // percentage
+	/** Progressive tick: some player in the area must be at least this power level. */
+	minLevel?: number;
+	/** Progressive tick: some player in the area must be at most this power level. */
+	maxLevel?: number;
+	/** Faction id. Counts only together with minReputation. */
+	faction?: string;
+	minReputation?: number;
+	/** Quest id. See questState. */
+	questRef?: string;
+	/** `complete` (default), `active`, or `notComplete` (never finished). */
+	questState?: 'complete' | 'active' | 'notComplete';
+	/** This character's successful Node travels must be at least this. */
+	minNodeTravels?: number;
+	/** With faction: reputation is below the hostility line. */
+	factionEnemy?: boolean;
+	/** Item id or entity reference. Area copies in depleted or pending:renew. */
+	depletedItem?: string;
+	/** How many of depletedItem must be stripped. Default 1 when the item is set. No player required. */
+	minDepleted?: number;
+	/** Eidolon id. Blank means any leader. Checked with no player required. */
+	tendency?: string;
+	/** Inclusive earned-lead floor. */
+	minWorldAlignment?: number;
+	/** Inclusive earned-lead ceiling. */
+	maxWorldAlignment?: number;
 }
 
 /**
