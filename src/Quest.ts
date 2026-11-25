@@ -41,6 +41,8 @@ export interface ISerializedQuestDef {
 		level: number;
 		title: string;
 	};
+	/** True when completion is waiting on the world-alignment gate. Survives logout. */
+	completionHeld?: boolean;
 }
 
 /**
@@ -58,6 +60,8 @@ export class Quest extends EventEmitter {
 	state: Record<string, any> | ISerializedQuestDef[];
 	GameState: IGameState;
 	started?: string;
+	/** Saved with the quest. Login uses it to finish a quest the gate had blocked. */
+	completionHeld?: boolean;
 
 	constructor(
 		GameState: IGameState,
@@ -226,6 +230,7 @@ export class Quest extends EventEmitter {
 				level: this.config.level,
 				title: this.config.title,
 			},
+			...(this.completionHeld ? { completionHeld: true } : {}),
 		};
 	}
 

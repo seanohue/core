@@ -132,6 +132,7 @@ export class QuestTracker {
 				(data.state as ISerializedQuestDef[])
 			);
 			quest.started = data.started;
+			quest.completionHeld = (data as { completionHeld?: boolean }).completionHeld === true;
 			quest.hydrate();
 
 			this.activeQuests.set(qid, quest);
